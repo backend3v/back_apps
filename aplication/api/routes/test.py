@@ -6,6 +6,6 @@ class TestRoutes:
     def __init__(self, app):
         self.app = app
         
-        @self.app.route('/test', methods=['POST'])
+        @self.app.route('/test', methods=['GET'])
         def test():
             return jsonify({"test":"Without Middleware"}),200

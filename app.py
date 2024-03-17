@@ -6,7 +6,10 @@ from config import Config
 from flask_cors import CORS
 
 
-app = Flask(__name__,template_folder='aplication/templates')
+app = Flask(__name__)
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 class Application:
     def __init__(self):
         #self.app = Flask(__name__,template_folder='aplication/templates')
@@ -14,9 +17,9 @@ class Application:
         app.config['SECRET_KEY'] = Config().secret_key
         TraslateRoutes(app)
         TestRoutes(app)
-    def runner(self):
-        app.run(host=Config().host, port=Config().port,
-                     debug=Config().debu)
+def runner():
+    app.run(host=Config().host, port=Config().port,
+                    debug=Config().debu)
 
 def run_app():
     aplication = Application()
