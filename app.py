@@ -29,6 +29,7 @@ def videos():
     print(f"Name Bucket {list(firebase_admin.storage.bucket().list_blobs())}")
     return jsonify({'data':new_data})
 
+
 class Application:
     def __init__(self):
         #self.app = Flask(__name__,template_folder='aplication/templates')
