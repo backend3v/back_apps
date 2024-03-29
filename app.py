@@ -14,20 +14,20 @@ def hello_world():
 
 
 
-@app.route('/videos')
-def videos():
-    try:
-        cred = credentials.Certificate("./aplication/static/config/config.json")
-        app = firebase_admin.initialize_app(cred,{'storageBucket': 'englishapp-418617.appspot.com'})# fetch all the files in the bucket
-    except:
-        pass
-    #list(bucket.list_blobs())
-    items = list(firebase_admin.storage.bucket().list_blobs())
-    new_data = []
-    for i in items:
-        new_data.append(str(i.name))
-    print(f"Name Bucket {list(firebase_admin.storage.bucket().list_blobs())}")
-    return jsonify({'data':new_data})
+# @app.route('/videos')
+# def videos():
+#     try:
+#         cred = credentials.Certificate("./aplication/static/config/config.json")
+#         app = firebase_admin.initialize_app(cred,{'storageBucket': 'englishapp-418617.appspot.com'})# fetch all the files in the bucket
+#     except:
+#         pass
+#     #list(bucket.list_blobs())
+#     items = list(firebase_admin.storage.bucket().list_blobs())
+#     new_data = []
+#     for i in items:
+#         new_data.append(str(i.name))
+#     print(f"Name Bucket {list(firebase_admin.storage.bucket().list_blobs())}")
+#     return jsonify({'data':new_data})
 
 
 class Application:
