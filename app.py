@@ -19,6 +19,8 @@ def hello_world():
 @app.route('/videos')
 def videos():
     try:
+        project_folder = os.path.expanduser(os.getcwd())  # adjust as appropriate
+        load_dotenv(os.path.join(project_folder, '.env'))
         print(f"----{os.getenv('CLIENT_ID')}")
         config = {
         "type": "service_account",
