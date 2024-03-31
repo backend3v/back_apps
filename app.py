@@ -19,7 +19,7 @@ def hello_world():
 @app.route('/videos')
 def videos():
     try:
-
+        print(f"----{os.getenv('CLIENT_ID')}")
         config = {
         "type": "service_account",
         "project_id": "englishapp-418617",
