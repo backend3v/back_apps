@@ -6,7 +6,9 @@ from config import Config
 from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, storage
-
+from dotenv import load_dotenv
+import os
+load_dotenv()
 app = Flask(__name__)
 @app.route('/')
 def hello_world():
@@ -17,7 +19,21 @@ def hello_world():
 @app.route('/videos')
 def videos():
     try:
-        cred = credentials.Certificate("./aplication/static/config/config.json")
+
+        config = {
+  "type": "service_account",
+  "project_id": "englishapp-418617",
+  "private_key_id": os.getenv('PRIVATE_KEY_ID'),
+  "private_key": os.getenv('PRIVATE_KEY'),
+  "client_email": "firebase-adminsdk-zn4f0@englishapp-418617.iam.gserviceaccount.com",
+  "client_id": os.getenv('CLIENT_ID'),
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zn4f0%40englishapp-418617.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+        cred = credentials.Certificate(config)
         app = firebase_admin.initialize_app(cred,{'storageBucket': 'englishapp-418617.appspot.com'})# fetch all the files in the bucket
     except:
         pass
