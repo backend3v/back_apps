@@ -21,18 +21,19 @@ def videos():
     try:
 
         config = {
-  "type": "service_account",
-  "project_id": "englishapp-418617",
-  "private_key_id": os.getenv('PRIVATE_KEY_ID'),
-  "private_key": os.getenv('PRIVATE_KEY'),
-  "client_email": "firebase-adminsdk-zn4f0@englishapp-418617.iam.gserviceaccount.com",
-  "client_id": os.getenv('CLIENT_ID'),
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zn4f0%40englishapp-418617.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
+        "type": "service_account",
+        "project_id": "englishapp-418617",
+        "private_key_id": os.getenv('PRIVATE_KEY_ID'),
+        "private_key": os.getenv('PRIVATE_KEY'),
+        "client_email": "firebase-adminsdk-zn4f0@englishapp-418617.iam.gserviceaccount.com",
+        "client_id": os.getenv('CLIENT_ID'),
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zn4f0%40englishapp-418617.iam.gserviceaccount.com",
+        "universe_domain": "googleapis.com"
+        }
+        print(config)
         cred = credentials.Certificate(config)
         app = firebase_admin.initialize_app(cred,{'storageBucket': 'englishapp-418617.appspot.com'})# fetch all the files in the bucket
     except:
