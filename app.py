@@ -30,7 +30,7 @@ def video():
     print(name)
     result = StorageService().get_document(name)
     response = jsonify({"data":result}), 200
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    #response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 class Application:
