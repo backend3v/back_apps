@@ -1,11 +1,10 @@
-from flask import Flask,jsonify
-import base64
+from flask import Flask,jsonify,request
+import base64,traceback
 from aplication.api.routes.test import TestRoutes
 from aplication.api.routes.traslate import TraslateRoutes
 from infrastructure.storage_service import StorageService
 from config import Config
 from flask_cors import CORS
-import firebase_admin
 from firebase_admin import credentials, storage
 from dotenv import load_dotenv
 import os
@@ -23,11 +22,13 @@ def hello_world():
 def videos():
     return jsonify({"data":StorageService().get_documents()})
 
-@app.route('/video')
+@app.route('/video',methods=['POST'])
 def video():
-    name = "English (auto-generated)] The Big Bang Theory _ Season 1 _ Episode 2 _ The Big Bran Hypothesis [DownSub.com].srt"
+    print('@???')
+    name =request.json['name']
+    print(name)
     result = StorageService().get_document(name)
-    return jsonify({"data":result})
+    return jsonify({"data":result}), 200
 
 class Application:
     def __init__(self):

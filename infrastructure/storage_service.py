@@ -1,11 +1,17 @@
 import os
 import firebase_admin
 from firebase_admin import credentials, storage
-import traceback,re
+import traceback,re,requests
 from dotenv import load_dotenv
+from infrastructure.singleton import SingletonMeta
 
-class StorageService:
+
+class StorageService(metaclass=SingletonMeta):
+    def __init__(self):
+        self.app = None
+        self.bucket = None
     def conect(self):
+        
         try:
             project_folder = os.path.expanduser(os.getcwd())  # adjust as appropriate
             load_dotenv(os.path.join(project_folder, '.env'))
@@ -23,12 +29,12 @@ class StorageService:
             "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zn4f0%40englishapp-418617.iam.gserviceaccount.com",
             "universe_domain": "googleapis.com"
             }
-            print(config)
-            cred = credentials.Certificate(config)
-            app = firebase_admin.initialize_app(cred,{'storageBucket': 'englishapp-418617.appspot.com'})# fetch all the files in the bucket
-            bucket = firebase_admin.storage.bucket()
-            print(f"Name Bucket {list(bucket.list_blobs())}")
-            return bucket
+            if self.app == None:
+                cred = credentials.Certificate(config)
+                self.app = firebase_admin.initialize_app(cred,{'storageBucket': 'englishapp-418617.appspot.com'})# fetch all the files in the bucket
+                self.bucket = firebase_admin.storage.bucket()
+                print(f"Name Bucket {list(self.bucket.list_blobs())}")
+            return self.bucket
         except:
             print(traceback.format_exc())
             return None
@@ -42,14 +48,20 @@ class StorageService:
         return new_data
     
     def get_document(self,doc):
+        print("ddd ",doc)
         bucket = self.conect()
-        source_blob_name = "33.txt"
+        source_blob_name = doc
+        if source_blob_name == None:
+            return None
         blob = bucket.blob(source_blob_name)
-        path = str(os.getcwd())+"/temp.txt"
-        content = None
-        blob.download_to_filename(path)
-        with open(path) as file:
-            content = file.read()
+        r = requests.get(f'https://firebasestorage.googleapis.com/v0/b/englishapp-418617.appspot.com/o/{doc}?alt=media&token=41ebb839-beff-4104-bd6c-d73aec6fdb64')
+        content = r.content.decode()
+        #print("ddd ",content)
+        # path = str(os.getcwd())+"/temp.txt"
+        # content = None
+        # blob.download_to_filename(path)
+        # with open(path) as file:
+        #     content = file.read()
         dict_result = {}
         def to_ms(tiempo):
             hours = int(tiempo[0]) * 3600000
@@ -61,12 +73,12 @@ class StorageService:
             return miliseconds
         def process_match(obj_match):
             obj = obj_match[0].split(sep="\n")
-            print(obj)
+            #print(obj)
             time = obj[1].split(sep=" --> ")
-            print(time)
+            #print(time)
             time = time[1].replace(",",":")
             time = time.split(":")
-            print(time)
+            #print(time)
             new_list = []
             for i in time:
                 new_list.append(str(int(i)))
@@ -76,6 +88,6 @@ class StorageService:
             dict_result[obj[0]] = dict_obj
             return str(obj)
             
-        patron = r'([0-9]{1,2}\n[0-9][0-9]:[0-9][0-9]:[0-9][0-9],[0-9][0-9][0-9]\s-->\s[0-9][0-9]:[0-9][0-9]:[0-9][0-9],[0-9][0-9][0-9]\n[\w\s]*?[^\n]*)'
+        patron = r'([0-9]{1,3}\n[0-9][0-9]:[0-9][0-9]:[0-9][0-9],[0-9][0-9][0-9]\s-->\s[0-9][0-9]:[0-9][0-9]:[0-9][0-9],[0-9][0-9][0-9]\n[\w\s]*?[^\n]*)'
         result = re.sub(patron, process_match,content)
         return dict_result
