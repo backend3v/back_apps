@@ -28,7 +28,9 @@ def video():
     name =request.json['name']
     print(name)
     result = StorageService().get_document(name)
-    return jsonify({"data":result}), 200
+    response = jsonify({"data":result}), 200
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 class Application:
     def __init__(self):
