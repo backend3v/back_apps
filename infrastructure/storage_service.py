@@ -20,7 +20,7 @@ class StorageService(metaclass=SingletonMeta):
             "type": "service_account",
             "project_id": "englishapp-418617",
             "private_key_id": os.getenv('PRIVATE_KEY_ID'),
-            "private_key": os.getenv('PRIVATE_KEY'),
+            "private_key": os.getenv('PRIVATE_KEY').replace(r'\n', '\n'),
             "client_email": "firebase-adminsdk-zn4f0@englishapp-418617.iam.gserviceaccount.com",
             "client_id": os.getenv('CLIENT_ID'),
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
