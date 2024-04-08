@@ -3,6 +3,7 @@ import base64,traceback
 from aplication.api.routes.test import TestRoutes
 from aplication.api.routes.traslate import TraslateRoutes
 from infrastructure.storage_service import StorageService
+from infrastructure.traslate_service import TraslateService
 from config import Config
 from flask_cors import CORS
 from firebase_admin import credentials, storage
@@ -33,6 +34,14 @@ def video():
     #response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
+@app.route('/traslate',methods=['POST'])
+def traslate():
+    phrase =request.json['phrase']
+    print(phrase)
+    result = TraslateService().get_traslate(phrase)
+    response = jsonify({"data":result}), 200
+    #response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 class Application:
     def __init__(self):
         #self.app = Flask(__name__,template_folder='aplication/templates')

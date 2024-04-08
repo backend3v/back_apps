@@ -6,7 +6,6 @@ import re,json
 class TraslateRoutes:
     def __init__(self, app):
         self.app = app
-        
         @self.app.route('/subtitles', methods=['POST'])
         @middleware
         def send_subtitles():
