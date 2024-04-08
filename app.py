@@ -9,11 +9,13 @@ from flask_cors import CORS
 from firebase_admin import credentials, storage
 from dotenv import load_dotenv
 import os
-load_dotenv()
 app = Flask(__name__)
 CORS(app,origins=["*"])
 @app.route('/')
 def hello_world():
+    project_folder = os.path.expanduser(os.getcwd())  # adjust as appropriate
+    load_dotenv(os.path.join(project_folder, '.env'))
+    print(f"----{os.getenv('CLIENT_ID')}")
     return 'Hello, World 33!'
 
 
